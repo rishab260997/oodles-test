@@ -1,5 +1,12 @@
 import React, {useState} from 'react';
-import {Text, View, Pressable, TextInput, ScrollView} from 'react-native';
+import {
+  Text,
+  View,
+  Pressable,
+  TextInput,
+  ScrollView,
+  Image,
+} from 'react-native';
 import {launchCamera, launchImageLibrary} from 'react-native-image-picker';
 import {colors} from '../styles/colors';
 import {Styles} from '../styles/Signup';
@@ -12,6 +19,7 @@ const SignupForm = ({navigation}) => {
     email: false,
     password: false,
     confPassword: false,
+    image: false,
   });
   const [formData, setFormData] = useState({
     firstName: '',
@@ -20,6 +28,7 @@ const SignupForm = ({navigation}) => {
     email: '',
     password: '',
     confPassword: '',
+    image: false,
   });
 
   const handleChange = (key, value) => {
@@ -32,6 +41,7 @@ const SignupForm = ({navigation}) => {
     let errorObj = {
       firstName: false,
       lastName: false,
+      image: false,
       mobile: false,
       email: false,
       password: false,
@@ -49,6 +59,9 @@ const SignupForm = ({navigation}) => {
     }
     if (formData.mobile.length !== 10) {
       errorObj.mobile = 'Please enter a valid number';
+    }
+    if (!formData.image) {
+      errorObj.image = 'Please upload an image';
     }
 
     const passwordInputValue = formData.password.trim();
@@ -108,15 +121,52 @@ const SignupForm = ({navigation}) => {
   const handleSubmit = () => {
     let isValidated = handleValidate();
     if (isValidated) {
+      setFormData({
+        firstName: '',
+        lastName: '',
+        mobile: '',
+        email: '',
+        password: '',
+        confPassword: '',
+        image: false,
+      });
       navigation.navigate('ThankYou');
+    }
+  };
+
+  const handleImageUpload = async () => {
+    try {
+      const result = await launchImageLibrary();
+      console.log(result);
+      if (result?.assets?.length) {
+        setFormData({...formData, image: result?.assets[0]});
+      }
+    } catch (error) {
+      throw error;
     }
   };
   return (
     <ScrollView>
       <View style={Styles.formContainer}>
+        <Pressable onPress={handleImageUpload}>
+          {formData.image ? (
+            <View style={Styles.imageContainer}>
+              <Image source={{uri: formData.image.uri}} style={Styles.image} />
+            </View>
+          ) : (
+            <View style={Styles.imageButton}>
+              <Text style={Styles.imageButtonEmoji}>👤</Text>
+              <Text style={Styles.imageButtonText}>Upload Image</Text>
+            </View>
+          )}
+          <Text style={{...Styles.error, textAlign: 'center'}}>
+            {error.image && error.image}
+          </Text>
+        </Pressable>
         <View style={Styles.inputContainer}>
           <Text style={Styles.inputLabel}>First Name</Text>
           <TextInput
+            autoCapitalize="words"
             placeholder="First Name"
             placeholderTextColor={colors.secondary}
             style={Styles.input}
@@ -128,6 +178,7 @@ const SignupForm = ({navigation}) => {
         <View style={Styles.inputContainer}>
           <Text style={Styles.inputLabel}>Last Name</Text>
           <TextInput
+            autoCapitalize="words"
             placeholder="Last Name"
             placeholderTextColor={colors.secondary}
             style={Styles.input}
@@ -139,6 +190,7 @@ const SignupForm = ({navigation}) => {
         <View style={Styles.inputContainer}>
           <Text style={Styles.inputLabel}>Email</Text>
           <TextInput
+            autoCapitalize="none"
             placeholder="Email"
             placeholderTextColor={colors.secondary}
             style={Styles.input}
@@ -151,6 +203,7 @@ const SignupForm = ({navigation}) => {
         <View style={Styles.inputContainer}>
           <Text style={Styles.inputLabel}>Mobile</Text>
           <TextInput
+            autoCapitalize="none"
             placeholder="Mobile number"
             placeholderTextColor={colors.secondary}
             style={Styles.input}
@@ -163,6 +216,7 @@ const SignupForm = ({navigation}) => {
         <View style={Styles.inputContainer}>
           <Text style={Styles.inputLabel}>Password</Text>
           <TextInput
+            autoCapitalize="none"
             placeholder="Password"
             placeholderTextColor={colors.secondary}
             style={Styles.input}
@@ -176,6 +230,7 @@ const SignupForm = ({navigation}) => {
         <View style={Styles.inputContainer}>
           <Text style={Styles.inputLabel}>Confirm Password</Text>
           <TextInput
+            autoCapitalize="none"
             placeholder="Confirm password"
             placeholderTextColor={colors.secondary}
             style={Styles.input}
