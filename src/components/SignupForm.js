@@ -8,6 +8,7 @@ const SignupForm = ({navigation}) => {
   const [error, setError] = useState({
     firstName: false,
     lastName: false,
+    mobile: false,
     email: false,
     password: false,
     confPassword: false,
@@ -15,6 +16,7 @@ const SignupForm = ({navigation}) => {
   const [formData, setFormData] = useState({
     firstName: '',
     lastName: '',
+    mobile: '',
     email: '',
     password: '',
     confPassword: '',
@@ -30,6 +32,7 @@ const SignupForm = ({navigation}) => {
     let errorObj = {
       firstName: false,
       lastName: false,
+      mobile: false,
       email: false,
       password: false,
       confPassword: false,
@@ -43,6 +46,9 @@ const SignupForm = ({navigation}) => {
     }
     if (!exp.test(String(formData.email).toLowerCase())) {
       errorObj.email = 'Please enter a valid email';
+    }
+    if (formData.mobile.length !== 10) {
+      errorObj.mobile = 'Please enter a valid number';
     }
 
     const passwordInputValue = formData.password.trim();
@@ -141,6 +147,18 @@ const SignupForm = ({navigation}) => {
             onChangeText={text => handleChange('email', text)}
           />
           <Text style={Styles.error}>{error.email && error.email}</Text>
+        </View>
+        <View style={Styles.inputContainer}>
+          <Text style={Styles.inputLabel}>Mobile</Text>
+          <TextInput
+            placeholder="Mobile number"
+            placeholderTextColor={colors.secondary}
+            style={Styles.input}
+            value={formData.mobile}
+            textContentType="telephoneNumber"
+            onChangeText={text => handleChange('mobile', text)}
+          />
+          <Text style={Styles.error}>{error.mobile && error.mobile}</Text>
         </View>
         <View style={Styles.inputContainer}>
           <Text style={Styles.inputLabel}>Password</Text>
