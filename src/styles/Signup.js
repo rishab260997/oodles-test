@@ -4,7 +4,6 @@ import { colors } from './colors';
 export const Styles = StyleSheet.create({
   root: {
     backgroundColor: colors.background,
-    flex: 1,
     paddingHorizontal: 10,
     paddingVertical: 50,
   },
@@ -17,18 +16,21 @@ export const Styles = StyleSheet.create({
   formContainer: {
     marginVertical: 50,
   },
+  inputContainer: {
+      marginVertical: 10,
+  },
   inputLabel: {
     color: colors.primary,
-    fontSize: 24,
-    marginBottom: 0,
-    marginTop: 10,
+    fontSize: 16,
+    marginHorizontal: 5
   },
   input: {
-    borderColor: colors.secoondary,
+    borderColor: colors.secondary,
     borderWidth: 2,
     borderRadius: 50,
-    marginBottom: 20,
-    fontSize: 24,
+    marginBottom: 5,
+    paddingHorizontal: 20,
+    fontSize: 18,
     paddingVertical: 5,
     color: colors.primary,
   },
@@ -46,4 +48,7 @@ export const Styles = StyleSheet.create({
     fontSize: 24,
     fontWeight: '800',
   },
+  error: {
+      color: colors.danger
+  }
 });
