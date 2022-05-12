@@ -1,5 +1,6 @@
 import React, {useState} from 'react';
 import {Text, View, Pressable, TextInput, ScrollView} from 'react-native';
+import {launchCamera, launchImageLibrary} from 'react-native-image-picker';
 import {colors} from '../styles/colors';
 import {Styles} from '../styles/Signup';
 
@@ -35,7 +36,6 @@ const SignupForm = ({navigation}) => {
     };
     let isValidated = false;
     if (!formData.firstName.length) {
-      console.log(formData.firstName.length, 'FIRSTNAME');
       errorObj.firstName = 'Please enter your first name';
     }
     if (!formData.lastName.length) {
@@ -85,26 +85,22 @@ const SignupForm = ({navigation}) => {
         errorObj.confPassword = false;
       }
     } else {
-        errorObj.confPassword = "Please confirm your password"
+      errorObj.confPassword = 'Please confirm your password';
     }
     Object.values(errorObj).forEach(val => {
-        console.log(val)
       if (val && val.length) {
         isValidated = false;
-        return
+        return;
       } else {
-          isValidated = true
+        isValidated = true;
       }
     });
     setError(errorObj);
     return isValidated;
   };
 
-  console.log(error, '::ERROR');
-
   const handleSubmit = () => {
     let isValidated = handleValidate();
-    console.log(isValidated,'isValidated')
     if (isValidated) {
       navigation.navigate('ThankYou');
     }
