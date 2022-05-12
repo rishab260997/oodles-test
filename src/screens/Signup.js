@@ -1,14 +1,17 @@
 import React from 'react';
-import {View, Text} from 'react-native'
+import {Text, ScrollView} from 'react-native'
+import SignupForm from '../components/SignupForm';
+import { Styles } from '../styles/Signup';
 
-const Signup = () => {
+const Signup = ({navigation}) => {
     return(
-        <View>
-            <Text>
+        <ScrollView style={Styles.root}>
+            <Text style={Styles.title}>
                 Sign Up
             </Text>
-        </View>
+            <SignupForm navigation={navigation} />
+        </ScrollView>
     )
 }
 
-export default Signup
+export default Signup;
